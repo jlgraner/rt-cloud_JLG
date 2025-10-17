@@ -270,6 +270,8 @@ def getDicomMetadata(dicomImg: pydicom.dataset.Dataset, kind='all') -> dict:
 
     ignoredTags = ['Pixel Data']  # the image's raw data is not metadata
 
+    # TODO: if enhanced dicom, pull repetition time from sequences
+
     for elem in dicomImg:
         if elem.name in ignoredTags:
             continue
