@@ -228,7 +228,12 @@ def getDicomAcquisitionTime(dicomImg) -> datetime.time:
 
 def getDicomRepetitionTime(dicomImg) -> float:
     """Returns the TR repetition time in seconds"""
-    repTm = dicomImg.get('RepetitionTime', None)
+    # Add handling of enhanced DICOM format
+    class_uid = dicomImg.SOPClassUID.name
+    if class_uid.startswith("Enhanced"):
+        repTm = dicomImg.SharedFunctionalGroupsSequence[0].MRTimingAndRelatedParametersSequence[0].RepetitionTime
+    else:
+        repTm = dicomImg.get('RepetitionTime', None)
     if repTm is None:
         return None
     tr_sec = float(repTm) / 1000
