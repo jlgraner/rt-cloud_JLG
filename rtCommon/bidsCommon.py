@@ -287,6 +287,9 @@ def getDicomMetadata(dicomImg: pydicom.dataset.Dataset, kind='all') -> dict:
         elif STORE_PUBLIC:
             metadata[cleanedKey] = value
 
+    if dicomImg.SOPClassUID.name == "Enhanced MR Image Storage":
+        metadata['RepetitionTime'] = dicomImg.SharedFunctionalGroupsSequence[0].MRTimingAndRelatedParametersSequence[0].RepetitionTime
+
     return metadata
 
 
